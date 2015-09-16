@@ -28,6 +28,8 @@ def cipher(plaintext, key):
          print(keychar, block, reordered_block)
 
          output += reordered_block
+
+     #Begin the second stage of the cipher
      print("output: ", "".join(output))
      return "".join(output)
 
