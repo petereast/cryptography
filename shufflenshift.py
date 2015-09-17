@@ -10,7 +10,7 @@ def creorder(plaintext, key): #cipher reorder
      try:
          plaintext = bytes(plaintext, "UTF-8")
      except TypeError:
-         print("Plain text already bytes...\nNice one! :)")
+        #print("Plain text already bytes...\nNice one! :)")
      key = bytes(key, "UTF-8")
      # Take the plaintext in blocks of four (or more) characters
      blocksize = 4
@@ -42,7 +42,7 @@ def cshift(plaintext, key): #cipher shift
     try:
         plaintext = bytes(plaintext, "UTF-8")
     except TypeError:
-        print("Plain text already bytes...\nNice one! :)")
+       #print("Plain text already bytes...\nNice one! :)")
     key = bytes(key, "UTF-8")
     ciphertext = []
 
@@ -56,11 +56,10 @@ def cipher(plaintext, key):
     # Generate a cipher using a combination of the two sub-ciphers
     # Reorder the plaintext first...
     plaintext = creorder(plaintext, key)
-    print(plaintext)
+   #print(plaintext)
 
     # Shift the plaintext
     ciphertext = cshift(plaintext, key)
-    print(ciphertext)
     return ciphertext
 
 def dreorder(ciphertext, key): #decipher reorder
@@ -104,7 +103,7 @@ def dshift(ciphertext, key):
 def decipher(ciphertext, key):
     # This should undo the damage done by the first cipher process
     # Get the cipher back into it's original order
-    print("C:",ciphertext)
+   #print("C:",ciphertext)
     ciphertext = dshift(ciphertext, key)
     # De shift the ciphertext...
     plaintext = dreorder(ciphertext, key)
@@ -116,13 +115,6 @@ def gen_random_key(length):
         output += chr(random.randrange(ord("A"), ord("z")))
 
     return output
-key = gen_random_key(5)
-print("key:", key)
+key = gen_random_key(5)#print("key:", key)
 #print("output:",decipher(cipher(gen_random_key(4000), key), key))
-#print(cipher("hello world", key))
-print(decipher(cipher("hello world", key), key))
-
-
-test_reorder_integrity()
-test_shift_integrity()
-test_cipher_integrity()
+#print(cipher("hello world", key))#print(decipher(cipher("hello world", key), key))

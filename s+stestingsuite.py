@@ -40,3 +40,8 @@ def test_reorder_integrity():
          else:
             wrong+= 1
     return right
+
+
+test_reorder_integrity()
+test_shift_integrity()
+test_cipher_integrity()
