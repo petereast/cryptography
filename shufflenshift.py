@@ -11,6 +11,7 @@ def creorder(plaintext, key): #cipher reorder
          plaintext = bytes(plaintext, "UTF-8")
      except TypeError:
         #print("Plain text already bytes...\nNice one! :)")
+        pass
      key = bytes(key, "UTF-8")
      # Take the plaintext in blocks of four (or more) characters
      blocksize = 4
@@ -43,6 +44,7 @@ def cshift(plaintext, key): #cipher shift
         plaintext = bytes(plaintext, "UTF-8")
     except TypeError:
        #print("Plain text already bytes...\nNice one! :)")
+       pass
     key = bytes(key, "UTF-8")
     ciphertext = []
 
