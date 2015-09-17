@@ -5,9 +5,12 @@
 
 import random, math
 
-def cipher(plaintext, key):
+def creorder(plaintext, key): #cipher reorder
      # Make the key and plaintext an array of integers
-     plaintext = bytes(plaintext, "UTF-8")
+     try:
+         plaintext = bytes(ciphertext, "UTF-8")
+     except TypeError:
+         print("Plain text already bytes...\nNice one! :)")
      key = bytes(key, "UTF-8")
      # Take the plaintext in blocks of four (or more) characters
      blocksize = 4
@@ -21,21 +24,41 @@ def cipher(plaintext, key):
          reordered_block = [None]*blocksize
 
          for index, char in enumerate(block):
-             #print(chr(keychar), (keychar+index)%blocksize)
+             ##print(chr(keychar), (keychar+index)%blocksize)
              reordered_block[index] = block[(keychar+index)%blocksize]
 
          reordered_block = "".join([chr(o) for o in reordered_block])
-         print(keychar, block, reordered_block)
+         #print(keychar, block, reordered_block)
 
          output += reordered_block
 
      #Begin the second stage of the cipher
-     print("output: ", "".join(output))
+     #print("output: ", "".join(output))
      return "".join(output)
 
-def decipher(ciphertext, key):
+def cshift(plaintext, key): #cipher shift
+    # This is a twist on a tradition Caesar Shift, each character is changed by
+    # the value of the key.
+    try:
+        plaintext = bytes(plaintext, "UTF-8")
+    except TypeError:
+        print("Plain text already bytes...\nNice one! :)")
+    key = bytes(key, "UTF-8")
+    ciphertext = []
+
+    for index, char in enumerate(plaintext):
+        #print(index, char, char+key[index%len(key)])
+        ciphertext.append(char+key[index%len(key)])
+
+    return bytes(ciphertext)
+
+def dreorder(ciphertext, key): #decipher reorder
     # make the key and the ciphertext an array of integers
-    ciphertext = bytes(ciphertext, "UTF-8")
+    try:
+        ciphertext = bytes(ciphertext, "UTF-8")
+    except TypeError:
+        print("ciphertext already bytes...\nNice one! :)")
+
     key = bytes(key, "UTF-8")
 
     #take the cipher in blocks
@@ -52,8 +75,20 @@ def decipher(ciphertext, key):
             ordered_block[index] = block[(index - keychar)%blocksize]
         ordered_block = "".join([chr(o) for o in ordered_block])
         output+= ordered_block
-        print(keychar, block, ordered_block)
+        #print(keychar, block, ordered_block)
     return "".join(output)
+
+def dshift(ciphertext, key):
+    try:
+        ciphertext = bytes(ciphertext, "UTF-8")
+    except TypeError:
+        print("ciphertext already bytes...\nNice one! :)")
+    key = bytes(key, "UTF-8")
+    plaintext = []
+    for index, char in enumerate(ciphertext):
+        plaintext.append(char-key[index%len(key)])
+    return "".join([chr(i) for i in plaintext])
+
 
 def gen_random_key(length):
     output = ''
@@ -63,14 +98,35 @@ def gen_random_key(length):
     return output
 key = gen_random_key(5)
 print("key:", key)
-print("output:",decipher(cipher("The quick brown fox jumped over the lazy dog", key), key))
+#print("output:",decipher(cipher(gen_random_key(4000), key), key))
 
-results = []
+def test_shift_integrity():
+    right, wrong = 0, 0
+    print("Testing the shifting integrity...")
+    for j in range(100):
+        i = gen_random_key(5000)
+        key = gen_random_key(15)
+        o = dshift(cshift(i, key), key)
+        if i == o:
+            right+=1
+        else:
+            wrong+=1
+    print("Percentage correct: {0}%\nPercentage incorrect: {1}%".format(right, wrong))
 
-# for i in range(100):
-#     i = "The quick brown fox jumped of the lazy-ass dog"
-#     key = gen_random_key(15)
-#     o = decipher(cipher(i, key), key)
-#     results.append(i == o)
-#
-# print(results)
+def test_reorder_integrity():
+    right, wrong = 0, 0
+    print("Testing the reorder integrity...")
+    for j in range(100):
+         i = gen_random_key(5000)
+         key = gen_random_key(15)
+         o = dreorder(creorder(i, key), key)
+         if i == o:
+             right+=1
+         else:
+            wrong+= 1
+         print("{0}% complete".format(j+1))
+
+    print("Percentage correct: {0}%\nPercentage incorrect: {1}%".format(right, wrong))
+
+test_reorder_integrity()
+test_shift_integrity()
