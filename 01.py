@@ -8,7 +8,7 @@ import random, math
 def creorder(plaintext, key): #cipher reorder
      # Make the key and plaintext an array of integers
      try:
-         plaintext = bytes(ciphertext, "UTF-8")
+         plaintext = bytes(plaintext, "UTF-8")
      except TypeError:
          print("Plain text already bytes...\nNice one! :)")
      key = bytes(key, "UTF-8")
@@ -52,6 +52,19 @@ def cshift(plaintext, key): #cipher shift
 
     return bytes(ciphertext)
 
+def cipher(plaintext, key):
+    # Generate a cipher using a combination of the two sub-ciphers
+    # Reorder the plaintext first...
+    plaintext = creorder(plaintext, key)
+
+    # Shift the plaintext
+    ciphertext = cshift(plaintext, key)
+
+    # Reorder the ciphertext again
+    ciphertext = creorder(ciphertext, key)
+
+    return ciphertext
+
 def dreorder(ciphertext, key): #decipher reorder
     # make the key and the ciphertext an array of integers
     try:
@@ -89,6 +102,16 @@ def dshift(ciphertext, key):
         plaintext.append(char-key[index%len(key)])
     return "".join([chr(i) for i in plaintext])
 
+def decipher(ciphertext, key):
+    # This should undo the damage done by the first cipher process
+    # Get the cipher back into it's original order
+    ciphertext = dreorder(ciphertext, key)
+    # De shift the ciphertext...
+    plaintext = dshift(ciphertext, key)
+    # Restore the original order of the ciphertext
+    plaintext = dreorder(ciphertext, key)
+
+    return plaintext
 
 def gen_random_key(length):
     output = ''
@@ -99,6 +122,7 @@ def gen_random_key(length):
 key = gen_random_key(5)
 print("key:", key)
 #print("output:",decipher(cipher(gen_random_key(4000), key), key))
+print(decipher(cipher("hello world", key), key))
 
 def test_shift_integrity():
     right, wrong = 0, 0
@@ -128,5 +152,5 @@ def test_reorder_integrity():
 
     print("Percentage correct: {0}%\nPercentage incorrect: {1}%".format(right, wrong))
 
-test_reorder_integrity()
-test_shift_integrity()
+#test_reorder_integrity()
+#test_shift_integrity()
