@@ -68,8 +68,8 @@ def dreorder(ciphertext, key): #decipher reorder
     try:
         ciphertext = bytes(ciphertext, "UTF-8")
     except TypeError:
-        print("ciphertext already bytes...\nNice one! :)")
-
+        #print("ciphertext already bytes...\nNice one! :)")
+        pass
     key = bytes(key, "UTF-8")
 
     #take the cipher in blocks
@@ -93,7 +93,8 @@ def dshift(ciphertext, key):
     try:
         ciphertext = bytes(ciphertext, "UTF-8")
     except TypeError:
-        print("ciphertext already bytes...\nNice one! :)")
+        #print("ciphertext already bytes...\nNice one! :)")
+        pass
     key = bytes(key, "UTF-8")
     plaintext = []
     for index, char in enumerate(ciphertext):
@@ -103,9 +104,10 @@ def dshift(ciphertext, key):
 def decipher(ciphertext, key):
     # This should undo the damage done by the first cipher process
     # Get the cipher back into it's original order
-    ciphertext = dreorder(ciphertext, key)
+    print("C:",ciphertext)
+    ciphertext = dshift(ciphertext, key)
     # De shift the ciphertext...
-    plaintext = dshift(ciphertext, key)
+    plaintext = dreorder(ciphertext, key)
     return plaintext
 
 def gen_random_key(length):
@@ -118,7 +120,20 @@ key = gen_random_key(5)
 print("key:", key)
 #print("output:",decipher(cipher(gen_random_key(4000), key), key))
 #print(cipher("hello world", key))
-#print(decipher(cipher("hello world", key), key))
+print(decipher(cipher("hello world", key), key))
+
+def test_cipher_integrity():
+    right, wrong = 0, 0
+    print("Testing combined integrity of the cipher...\nChunksize: 5 KiloBytes")
+    for j in range(0, 100):
+        i = gen_random_key(5*1024)
+        key = gen_random_key(15)
+        o = decipher(cipher(i, key), key)
+        if i == o:
+            right += 1
+        else:
+            wrong +=1
+    print(right, wrong)
 
 def test_shift_integrity():
     right, wrong = 0, 0
@@ -150,3 +165,4 @@ def test_reorder_integrity():
 
 #test_reorder_integrity()
 #test_shift_integrity()
+test_cipher_integrity()
