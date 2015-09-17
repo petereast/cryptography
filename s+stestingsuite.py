@@ -41,9 +41,9 @@ def test_reorder_integrity():
             wrong+= 1
     return right
 
+if __name__ == "__main__":
+    x = test_reorder_integrity()
+    x += test_shift_integrity()
+    x += test_cipher_integrity()
 
-x = test_reorder_integrity()
-x += test_shift_integrity()
-x += test_cipher_integrity()
-
-print("All good :)" if x == 300 else "There's an error somewhere")
+    print("All good :)" if x == 300 else "There's an error somewhere")
