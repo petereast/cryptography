@@ -3,7 +3,7 @@
 # This'll be a quick test of an idea I've been playing with for quite some time
 # now.
 
-import random, math
+import random, math, time
 
 def creorder(plaintext, key): #cipher reorder
      # Make the key and plaintext an array of integers
@@ -56,13 +56,11 @@ def cipher(plaintext, key):
     # Generate a cipher using a combination of the two sub-ciphers
     # Reorder the plaintext first...
     plaintext = creorder(plaintext, key)
+    print(plaintext)
 
     # Shift the plaintext
     ciphertext = cshift(plaintext, key)
-
-    # Reorder the ciphertext again
-    ciphertext = creorder(ciphertext, key)
-
+    print(ciphertext)
     return ciphertext
 
 def dreorder(ciphertext, key): #decipher reorder
@@ -108,9 +106,6 @@ def decipher(ciphertext, key):
     ciphertext = dreorder(ciphertext, key)
     # De shift the ciphertext...
     plaintext = dshift(ciphertext, key)
-    # Restore the original order of the ciphertext
-    plaintext = dreorder(ciphertext, key)
-
     return plaintext
 
 def gen_random_key(length):
@@ -122,7 +117,8 @@ def gen_random_key(length):
 key = gen_random_key(5)
 print("key:", key)
 #print("output:",decipher(cipher(gen_random_key(4000), key), key))
-print(decipher(cipher("hello world", key), key))
+#print(cipher("hello world", key))
+#print(decipher(cipher("hello world", key), key))
 
 def test_shift_integrity():
     right, wrong = 0, 0
@@ -141,7 +137,7 @@ def test_reorder_integrity():
     right, wrong = 0, 0
     print("Testing the reorder integrity...")
     for j in range(100):
-         i = gen_random_key(5000)
+         i = gen_random_key(1024*5)
          key = gen_random_key(15)
          o = dreorder(creorder(i, key), key)
          if i == o:
