@@ -122,47 +122,7 @@ print("key:", key)
 #print(cipher("hello world", key))
 print(decipher(cipher("hello world", key), key))
 
-def test_cipher_integrity():
-    right, wrong = 0, 0
-    print("Testing combined integrity of the cipher...\nChunksize: 5 KiloBytes")
-    for j in range(0, 100):
-        i = gen_random_key(5*1024)
-        key = gen_random_key(15)
-        o = decipher(cipher(i, key), key)
-        if i == o:
-            right += 1
-        else:
-            wrong +=1
-    print(right, wrong)
 
-def test_shift_integrity():
-    right, wrong = 0, 0
-    print("Testing the shifting integrity...")
-    for j in range(100):
-        i = gen_random_key(5000)
-        key = gen_random_key(15)
-        o = dshift(cshift(i, key), key)
-        if i == o:
-            right+=1
-        else:
-            wrong+=1
-    print("Percentage correct: {0}%\nPercentage incorrect: {1}%".format(right, wrong))
-
-def test_reorder_integrity():
-    right, wrong = 0, 0
-    print("Testing the reorder integrity...")
-    for j in range(100):
-         i = gen_random_key(1024*5)
-         key = gen_random_key(15)
-         o = dreorder(creorder(i, key), key)
-         if i == o:
-             right+=1
-         else:
-            wrong+= 1
-         print("{0}% complete".format(j+1))
-
-    print("Percentage correct: {0}%\nPercentage incorrect: {1}%".format(right, wrong))
-
-#test_reorder_integrity()
-#test_shift_integrity()
+test_reorder_integrity()
+test_shift_integrity()
 test_cipher_integrity()
