@@ -54,15 +54,17 @@ def cshift(plaintext, key): #cipher shift
 
     return bytes(ciphertext)
 
-def cipher(plaintext, key):
+def cipher(text, key):
     # Generate a cipher using a combination of the two sub-ciphers
     # Reorder the plaintext first...
-    plaintext = creorder(plaintext, key)
+    text = creorder(text, key)
    #print(plaintext)
 
     # Shift the plaintext
-    ciphertext = cshift(plaintext, key)
-    return ciphertext
+    text = cshift(text, key)
+
+    #text = creorder(text, key)
+    return text
 
 def dreorder(ciphertext, key): #decipher reorder
     # make the key and the ciphertext an array of integers
@@ -102,14 +104,16 @@ def dshift(ciphertext, key):
         plaintext.append(char-key[index%len(key)])
     return "".join([chr(i) for i in plaintext])
 
-def decipher(ciphertext, key):
+def decipher(text, key):
     # This should undo the damage done by the first cipher process
     # Get the cipher back into it's original order
    #print("C:",ciphertext)
-    ciphertext = dshift(ciphertext, key)
+    #text = dreorder(text, key)
+
+    text = dshift(text, key)
     # De shift the ciphertext...
-    plaintext = dreorder(ciphertext, key)
-    return plaintext
+    text = dreorder(text, key)
+    return text
 
 def gen_random_key(length):
     output = ''
@@ -118,5 +122,14 @@ def gen_random_key(length):
 
     return output
 key = gen_random_key(5)#print("key:", key)
-#print("output:",decipher(cipher(gen_random_key(4000), key), key))
+
+start = time.time()
+print("Generating some data")
+i = gen_random_key(1024*1024*5) #5Megabytes
+print("Testing encryption...")
+c = cipher(i, key)
+print("Testing decryption...")
+o = decipher(c, key)
+print(o == i)
+print("Total time: {0:^0.2f}".format(time.time()-start))
 #print(cipher("hello world", key))#print(decipher(cipher("hello world", key), key))
