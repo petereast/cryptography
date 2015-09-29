@@ -4,9 +4,9 @@ from shufflenshift import *
 
 def test_cipher_integrity():
     right, wrong = 0, 0
-    print("Testing combined integrity of the cipher...\nChunksize: 5 MegaBytes")
+    print("Testing combined integrity of the cipher...\nChunksize: 5 KiloBytes")
     for j in range(0, 100):
-        i = gen_random_key(1024*1024*5)
+        i = gen_random_key(1024*5)
         key = gen_random_key(15)
         o = decipher(cipher(i, key), key)
         if i == o:
@@ -19,7 +19,7 @@ def test_shift_integrity():
     right, wrong = 0, 0
     print("Testing the shifting integrity...")
     for j in range(100):
-        i = gen_random_key(1024*1024*5)
+        i = gen_random_key(1024*5)
         key = gen_random_key(15)
         o = dshift(cshift(i, key), key)
         if i == o:
@@ -32,7 +32,7 @@ def test_reorder_integrity():
     right, wrong = 0, 0
     print("Testing the reorder integrity...")
     for j in range(100):
-         i = gen_random_key(1024*1024*5)
+         i = gen_random_key(1024*5)
          key = gen_random_key(15)
          o = dreorder(creorder(i, key), key)
          if i == o:
