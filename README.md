@@ -1,4 +1,4 @@
-# cryptography
+# Cryptography
 *I am plan to work on several projects vaguely related to cryptography, this is where I'll store them*
 
 The general idea is that with the software that I'll write and store in this repository, I (and anyone else who wants to) will be able to make any form of data very difficult for a 3rd party to read.
