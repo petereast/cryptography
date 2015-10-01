@@ -39,6 +39,8 @@ def generate_series_of_cubes(total):
     
 
 
+
+
     #return
     if sum(cubes) == total:
         return cubes
