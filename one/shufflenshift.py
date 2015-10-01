@@ -125,7 +125,7 @@ key = gen_random_key(5)#print("key:", key)
 
 start = time.time()
 print("Generating some data")
-i = gen_random_key(1024*1024*5) #5Megabytes
+i = gen_random_key(1024*5) #5 Kilobytes
 print("Testing encryption...")
 c = cipher(i, key)
 print("Testing decryption...")
