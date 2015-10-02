@@ -8,14 +8,22 @@
 
 import random, time, sys, math
 
+def gen_random_key(length):
+    output = ''
+    for i in range(length):
+        output += chr(random.randrange(ord("A"), ord("z")))
+
+    return output
+
 def generate_series_of_cubes(total):
 
     cubes = []
+    dimentions = []
     sum_of_cubes = total
     #the `sum_of_cubes must` equal `total` when the function returns
 
     #find the maximum possible value for the cube that would fit.
-    maximum_cube = round(total ** (1 / 3.0))
+    maximum_cube = int(total ** (1 / 3.0))
 
     while total != sum(cubes):
         #if not maximum_cube == 1:
@@ -26,6 +34,7 @@ def generate_series_of_cubes(total):
         sum_of_cubes -= cube_size**3
 
         cubes.append(cube_size**3)
+        dimentions.append(cube_size)
 
         maximum_cube = int(sum_of_cubes ** (1 / 3.0))
         print("max:", maximum_cube,"this size:", cube_size, "total sum:",sum_of_cubes)
@@ -39,7 +48,7 @@ def generate_series_of_cubes(total):
 
     #return
     if sum(cubes) == total:
-        return cubes
+        return dimentions
     else:
         #something's wrong here, so throw an error!
         return None
@@ -66,7 +75,9 @@ def dreorder_cubes(cubes, key):
     # key = passed by value
     pass
 
-cubes = generate_series_of_cubes(1049)
+
+
+cubes = generate_series_of_cubes(random.randrange(0, 142672987))
 print(cubes)
-ereorder_cubes(cubes, "hello world")
+ereorder_cubes(cubes, gen_random_key(15))
 print(cubes)
