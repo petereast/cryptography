@@ -36,7 +36,7 @@ def generate_series_of_cubes(total):
     #you can't use random.shuffle - the cubes have to be reordered.
     # ~random.shuffle(cubes)~
 
-    
+
 
 
 
@@ -47,5 +47,16 @@ def generate_series_of_cubes(total):
     else:
         #something's wrong here, so throw an error!
         return None
+
+def ereorder_cubes(cubes, key):
+    # cubes = passed by ref
+    # key passed by value
+    pass
+
+
+def dreorder_cubes(cubes, key):
+    # cubes = passed by ref
+    # key = passed by value
+    pass
 
 print(generate_series_of_cubes(140))
