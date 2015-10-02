@@ -37,10 +37,6 @@ def generate_series_of_cubes(total):
     # ~random.shuffle(cubes)~
 
 
-
-
-
-
     #return
     if sum(cubes) == total:
         return cubes
@@ -48,15 +44,29 @@ def generate_series_of_cubes(total):
         #something's wrong here, so throw an error!
         return None
 
+def r_swap(l, pos1, pos2): #Recursive swap by reference
+    x = len(l)
+    temp_i = l[pos1 % x]
+    l[pos1 % x] = l[pos2 % x]
+    l[pos2 % x] = l[pos1 % x]
+
 def ereorder_cubes(cubes, key):
     # cubes = passed by ref
     # key passed by value
-    pass
+    key = bytes(key, "UTF-8")
 
+    iterations = key[0] * key[1]
+
+
+    for number in range(iterations):
+        r_swap(cubes, key[number % len(key)], key[(number+1) % len(key)])
 
 def dreorder_cubes(cubes, key):
     # cubes = passed by ref
     # key = passed by value
     pass
 
-print(generate_series_of_cubes(140))
+cubes = generate_series_of_cubes(1049)
+print(cubes)
+ereorder_cubes(cubes, "hello world")
+print(cubes)
