@@ -4,7 +4,7 @@
 ## TODO
 
 - [ ] Create a function to split the input bytes into cubes.
-- [ ] Create a function to generate a random list of cubic numbers.
+- [x] Create a function to generate a list of cubic numbers based on the length of the original input.
 - [ ] Create a set of functions to apply transformations to those cubes.
 - [ ] Do all of this while bearing in mind the massive tax this could potentially have on the system memory.
-- [ ] Write an algorithm to reorder a list based on a key.
+- [x] Write an algorithm to reorder a list based on a key.
