@@ -1,4 +1,4 @@
-#!/bin/python3
+d!/bin/python3
 
 # somehow encrypt things by putting them into one or many 3d shapes and performing
 # a series of 3d transformations to that/those shapes.
@@ -53,22 +53,63 @@ def generate_series_of_cubes(total):
         #something's wrong here, so throw an error!
         return None
 
-def r_swap(l, pos1, pos2): #swap by reference
-    x = len(l)
-    temp_i = l[pos1 % x]
-    l[pos1 % x] = l[pos2 % x]
-    l[pos2 % x] = l[pos1 % x]
 
-def ereorder_cubes(cubes, key):
-    # cubes = passed by ref
-    # key passed by value
+def creorder(plaintext, key): #cipher reorder
+     # Make the key and plaintext an array of integers
+     try:
+         plaintext = bytes(plaintext, "UTF-8")
+     except TypeError:
+        #print("Plain text already bytes...\nNice one! :)")
+        pass
+     key = bytes(key, "UTF-8")
+     # Take the plaintext in blocks of four (or more) characters
+     blocksize = 4
+     output = []
+     for index in range(0, len(plaintext), blocksize):
+         keychar = key[index%len(key)]
+         block = plaintext[index:index+blocksize]
+         blocksize = len(block)
+         # reorder the block according to the key
+
+         reordered_block = [None]*blocksize
+
+         for index, char in enumerate(block):
+             ##print(chr(keychar), (keychar+index)%blocksize)
+             reordered_block[index] = block[(keychar+index)%blocksize]
+
+         reordered_block = "".join([chr(o) for o in reordered_block])
+         #print(keychar, block, reordered_block)
+
+         output += reordered_block
+
+     #Begin the second stage of the cipher
+     #print("output: ", "".join(output))
+     return "".join(output)
+def dreorder(ciphertext, key): #decipher reorder
+    # make the key and the ciphertext an array of integers
+    try:
+        ciphertext = bytes(ciphertext, "UTF-8")
+    except TypeError:
+        #print("ciphertext already bytes...\nNice one! :)")
+        pass
     key = bytes(key, "UTF-8")
 
-    iterations = key[0] * key[1]
+    #take the cipher in blocks
+    blocksize = 4
+    output = []
+    for index in range(0, len(ciphertext), blocksize):
+        keychar = key[index%len(key)]
+        block = ciphertext[index:index+blocksize]
+        blocksize = len(block)
 
+        ordered_block = [None]*blocksize
 
-    for number in range(iterations):
-        r_swap(cubes, key[number % len(key)], key[(number+1) % len(key)])
+        for index, char in enumerate(block):
+            ordered_block[index] = block[(index - keychar)%blocksize]
+        ordered_block = "".join([chr(o) for o in ordered_block])
+        output+= ordered_block
+        #print(keychar, block, ordered_block)
+    return "".join(output)
 
 def dreorder_cubes(cubes, key):
     # cubes = passed by ref
