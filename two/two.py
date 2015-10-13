@@ -53,7 +53,7 @@ def generate_series_of_cubes(total):
         #something's wrong here, so throw an error!
         return None
 
-def r_swap(l, pos1, pos2): #Recursive swap by reference
+def r_swap(l, pos1, pos2): #swap by reference
     x = len(l)
     temp_i = l[pos1 % x]
     l[pos1 % x] = l[pos2 % x]
@@ -73,11 +73,17 @@ def ereorder_cubes(cubes, key):
 def dreorder_cubes(cubes, key):
     # cubes = passed by ref
     # key = passed by value
-    pass
+    key = bytes(key, "UTF-8")
+
+    iterations = key[0] * key[1]
+
+    for number in range(iterations):
+        r_swap(cubes, key[number % len(key)], key[(number+1) % len(key)])
 
 
-
+key = gen_random_key(15)
 cubes = generate_series_of_cubes(random.randrange(0, 142672987))
 print(cubes)
-ereorder_cubes(cubes, gen_random_key(15))
+ereorder_cubes(cubes, key)
 print(cubes)
+dreorder_cubes(cubes, key)
