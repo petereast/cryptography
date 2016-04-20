@@ -1,4 +1,4 @@
-d!/bin/python3
+    #!/bin/python3
 
 # somehow encrypt things by putting them into one or many 3d shapes and performing
 # a series of 3d transformations to that/those shapes.
@@ -85,6 +85,7 @@ def creorder(plaintext, key): #cipher reorder
      #Begin the second stage of the cipher
      #print("output: ", "".join(output))
      return "".join(output)
+
 def dreorder(ciphertext, key): #decipher reorder
     # make the key and the ciphertext an array of integers
     try:
@@ -111,6 +112,11 @@ def dreorder(ciphertext, key): #decipher reorder
         #print(keychar, block, ordered_block)
     return "".join(output)
 
+def r_swap(src, pos_a, pos_b):
+    tmp = src[pos_a]
+    src[pos_a] = src[pos_b]
+    src[pos_b] = tmp
+
 def dreorder_cubes(cubes, key):
     # cubes = passed by ref
     # key = passed by value
@@ -119,7 +125,17 @@ def dreorder_cubes(cubes, key):
     iterations = key[0] * key[1]
 
     for number in range(iterations):
-        r_swap(cubes, key[number % len(key)], key[(number+1) % len(key)])
+        r_swap(cubes, key[number % len(key)] % len(cubes), key[(number+1) % len(key)] % len(cubes))
+
+def ereorder_cubes(cubes, key):
+    # Cubes by ref
+    # Key by value
+
+    key = bytes(key, "UTF-8")
+    iterations = key[0] * key[1]
+
+    for number in range(iterations):
+        r_swap(cubes, key[number % len(key)] % len(cubes), key[(number+1) % len(key)] % len(cubes))
 
 
 key = gen_random_key(15)
